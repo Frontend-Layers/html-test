@@ -8,16 +8,49 @@ _Node.js library for testing HTML files on the fly and output errors in the cons
 
 ## How to install
 
-```
+### npm
+
+```shell
 npm i html-test
+```
+
+### yarn
+
+```shell
+yarn add html-test
 ```
 
 ## How to use
 
-```
+```javascript
 import htmlTest from 'htmlTest'
 
 htmlTest('./html/**/*.html')
+```
+
+## Gulp.js integration
+
+<img src=https://github.com/andreymatin/html-test/main/screen.png alt=screenshot>
+
+```javascript
+import gulp from 'gulp'
+const { parallel, series, watch } = gulp
+
+import htmlTest from 'htmlTest'
+
+const htmlTestRes = () =>
+  htmlTest('./html/**/*.html')
+
+const watcher = () => {
+  watch('./html/**/*.html', htmlTestRes)
+}
+
+export default series(
+  parallel(
+    series(htmlTestRes),
+    watcher
+  )
+)
 ```
 
 ## Recommendations

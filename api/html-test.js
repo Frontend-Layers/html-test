@@ -1,6 +1,6 @@
 import glob from 'glob'
 import fs from 'fs'
-import { post } from './post'
+import { post } from './post.js'
 import chalk from 'chalk';
 
 /**
