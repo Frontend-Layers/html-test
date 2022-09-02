@@ -1,0 +1,35 @@
+{
+  "name": "html-test",
+  "version": "1.0.0",
+  "description": "Node.js library for testing HTML files on the fly and output errors in the console with Gulp.js compatibilities",
+  "main": "index.js",
+  "scripts": {
+    "serve": "nodemon --experimental-specifier-resolution=node --no-warnings test.js"
+  },
+  "type": "module",
+  "keywords": [
+    "gulp",
+    "html",
+    "html5",
+    "html-test",
+    "html-validation",
+    "nodejs",
+    "validate",
+    "validation",
+    "test",
+    "w3c"
+  ],
+  "author": "Andrey Matin",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andreymatin/html-test.git"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "chalk": "^5.0.1",
+    "express": "^4.18.1",
+    "glob": "^8.0.3",
+    "nodemon": "^2.0.19"
+  }
+}
