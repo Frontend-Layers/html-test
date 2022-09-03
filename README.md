@@ -30,7 +30,7 @@ htmlTest('./html/**/*.html')
 
 ## Gulp.js integration
 
-<img src=https://github.com/andreymatin/html-test/main/screen.png alt=screenshot>
+<img src=https://raw.githubusercontent.com/andreymatin/html-test/main/screen.png alt=screenshot>
 
 ```javascript
 import gulp from 'gulp'

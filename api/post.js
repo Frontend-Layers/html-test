@@ -20,7 +20,7 @@ const post = async (body) => {
     return response.data.messages
   }
   catch (err) {
-    console.log(err)
+    console.log('[HTML Test] Error: Request Timeout')
   }
 }
 

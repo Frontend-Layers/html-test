@@ -4,34 +4,61 @@ import { post } from './post.js'
 import chalk from 'chalk';
 
 /**
+ * Requests Delay
+ *
+ * @param {*} ms
+ * @returns
+ */
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
  * HTML Test
  */
-async function htmlTest(folder) {
-
-  glob(folder, '', (err, files) => {
+const htmlTest = async (folder) => {
+  glob(folder, '', async (err, files) => {
     if (err) {
       return err
     }
 
-    files.forEach(function (file) {
-      fs.readFile(file, async (err, data) => {
-        if (err) {
-          console.log(err);
-        } else {
+    // Max Requests
+    const maxReq = 4
 
-          let results = await post(data.toString())
+    let filesLength = files.length
+    let iterations = Math.ceil(filesLength / maxReq);
 
-          if (results.length > 0) {
-            results.forEach(item => {
+    if (filesLength > 0) {
 
-              if (item.type === 'error') {
-                console.log(`\n` + chalk.gray(file) + `(${item.lastLine}:${item.lastColumn}) ` + `${item.message}` + chalk.green(`\n${item.extract}`))
+      for (let i = 1; i <= iterations; i++) {
+        let filesSlice = files.splice(0, maxReq)
+        console.log('filesSlice', filesSlice)
+
+        filesSlice.forEach((file) => {
+          fs.readFile(file, async (err, data) => {
+            if (err) {
+              console.log(err);
+            } else {
+              let results = await post(data.toString())
+
+              if (results && results.length > 0) {
+                results.forEach(item => {
+
+                  if (item.type === 'error') {
+                    console.log(`\n` + chalk.gray(file) + `(${item.lastLine}:${item.lastColumn}) ` + `${item.message}` + chalk.green(`\n${item.extract}`))
+                  }
+                });
               }
-            });
-          }
-        }
-      });
-    })
+
+            }
+          });
+        })
+
+
+        await delay(1000)
+      }
+
+    }
   })
 }
 
