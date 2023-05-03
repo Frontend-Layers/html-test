@@ -29,13 +29,13 @@ const htmlTest = async (folder = '', cfg = '') => {
   function getPattern(item) {
     switch (item) {
       case 'js-literals':
-        return /\$\{.+\}/g;
+        return /\$\{.+\}/;
         break;
 
       case 'twig':
       case 'mustache':
       case 'handlebars':
-        return /\{\{.+\}\}/g;
+        return /\{\{.+\}\}/;
         break;
     }
 
@@ -59,14 +59,16 @@ const htmlTest = async (folder = '', cfg = '') => {
 
       results.forEach(item => {
         const msg = item.message;
+        let hideMsg = false;
 
         for (let i = 0; i < pattern.length; i++) {
-          const reg = pattern[i];
-          hide = reg.test(msg);
-          if (hide) break;
+          hideMsg = false;
+          const regex = new RegExp(pattern[i], 'g');
+          hideMsg = regex.test(msg);
+          if (hideMsg === true) break;
         }
 
-        if (!hide) {
+        if (!hideMsg) {
           if (item.type === 'error') {
             console.log(`\n[Line: ${item.lastLine}] ` + chalk.gray(file) + `\n${msg}` + chalk.green(`\n${item.extract}`));
           }

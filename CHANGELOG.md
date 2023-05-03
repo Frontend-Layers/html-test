@@ -1,5 +1,9 @@
 # Changelog
 
+# [1.2.1]
+
+- updated RegExp for filter
+
 # [1.2.0]
 
 - added filter for template expressions
