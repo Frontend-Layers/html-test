@@ -58,10 +58,23 @@ export default
   )
 ```
 
+## Config
+
+- first parameter - source folder
+- ignore - ignored folder/s
+- hide - hide errors for template expression/s - 'js-literals', 'handlebars' etc.
+
+fore exmaple:
+
+```javascript
+htmlTest('./html/**/*.html', { ignore: ['html/ignore-me/**'], hide: ['js-literals']});
+```
+
+
 ## Limitations
 
 API limitation is 5 remote requests by one time.
-To extend it need to add iterations timeout (~1s).
+To extend it need to add iterations timeout.
 It means validation will be processed with ignorance
 some of the requests to avoid waiting delays or
 need to select prioritized html files.

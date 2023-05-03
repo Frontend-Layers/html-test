@@ -1,5 +1,13 @@
 # Changelog
 
+# [1.2.0]
+
+- added filter for template expressions
+
+# [1.1.2]
+
+- fixed packages load
+
 # [1.1.1]
 
 - updated documentation

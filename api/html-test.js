@@ -6,7 +6,41 @@ import chalk from 'chalk';
 /**
  * HTML Test
  */
-const htmlTest = async (folder = '', ignore = '') => {
+const htmlTest = async (folder = '', cfg = '') => {
+  let hide = cfg.hide;
+  let pattern = [];
+
+  if (cfg.hide) {
+    if (Array.isArray(hide)) {
+      hide.forEach(item => {
+        let p = getPattern(item);
+        if (p) {
+          pattern.push(p);
+        }
+      });
+    } else {
+      let p = getPattern(hide);
+      if (p) {
+        pattern.push(p);
+      }
+    }
+  }
+
+  function getPattern(item) {
+    switch (item) {
+      case 'js-literals':
+        return /\$\{.+\}/g;
+        break;
+
+      case 'twig':
+      case 'mustache':
+      case 'handlebars':
+        return /\{\{.+\}\}/g;
+        break;
+    }
+
+    return '';
+  }
 
   /**
    * Requests Delay
@@ -22,16 +56,27 @@ const htmlTest = async (folder = '', ignore = '') => {
 
     let results = await post(data.toString());
     if (results && results.length > 0) {
+
       results.forEach(item => {
-        if (item.type === 'error') {
-          console.log(`\n[${item.lastLine}:${item.lastColumn}] ` + chalk.gray(file) + `\n${item.message}` + chalk.green(`\n${item.extract}`));
+        const msg = item.message;
+
+        for (let i = 0; i < pattern.length; i++) {
+          const reg = pattern[i];
+          hide = reg.test(msg);
+          if (hide) break;
+        }
+
+        if (!hide) {
+          if (item.type === 'error') {
+            console.log(`\n[Line: ${item.lastLine}] ` + chalk.gray(file) + `\n${msg}` + chalk.green(`\n${item.extract}`));
+          }
         }
       });
-    }
 
+    }
   }
 
-  const files = await glob(folder, ignore);
+  const files = await glob(folder, cfg);
 
 
   // Max Requests
@@ -43,10 +88,6 @@ const htmlTest = async (folder = '', ignore = '') => {
   let iterations = 1;
 
   if (filesLength > 0) {
-    if (ignore) {
-
-    }
-
     for (let i = 1; i <= iterations; i++) {
       let filesSlice = files.splice(0, maxReq);
 
